@@ -1,48 +1,47 @@
-# 05-Build-and-Cache
+# 06-Dockercompose
 
-## Build
+## Docker compose
 
-### Build image
+### Up
 
-`$ make 00-build-01-build-image`
+`$ make 00-docker-compose-01-up`
 
 ```
-docker build \
-	  --build-arg APP_ENV=dev \
-	  --tag php-symfony \
-	  .
+docker-compose down
+docker-compose up -d
 ``` 
 
-### Run web server
+### Monitoring
 
-`$ make 00-build-02-run-web-server`
+`$ make 00-docker-compose-02-monitoring`
 
 ```
-docker kill php-symfony
-docker rm php-symfony
-docker run \
-	  --name php-symfony \
-	  --rm \
-	  --detach \
-	  -p 13380:80 \
-	  php-symfony
+docker-compose ps
+docker-compose logs
+docker-compose logs redis-cache
 ``` 
 
-### Test http
+### Check results
 
-`$ make 00-build-03-test-http`
+`$ make 00-docker-compose-03-check-results`
 
 ```
-curl http://127.0.0.1:13380/status
-curl http://127.0.0.1:13380/main.css
+curl http://127.0.0.1:4000/status
+``` 
+
+### Launch command
+
+`$ make 00-docker-compose-04-launch-command`
+
+```
+docker-compose exec application bin/console
 ``` 
 
 ### Cleanup
 
-`$ make 00-build-04-cleanup`
+`$ make 00-docker-compose-05-cleanup`
 
 ```
-docker kill php-symfony
-docker rm $(docker ps -a --format="{{.Names}}")
+#- docker-compose down
 ``` 
 

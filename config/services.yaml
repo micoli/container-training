@@ -40,3 +40,10 @@ services:
         public: true
         arguments:
             - "/tmp/data.txt"
+
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: redis://redis-cache
