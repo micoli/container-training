@@ -1,90 +1,48 @@
-# 01-Basic
+# 04-Multistage-build
 
-## Basic
+## Build
 
-### Usage
+### Build image
 
-`$ make 00-basic-01-usage`
+`$ make 00-build-01-build-image`
 
 ```
-docker
+docker build \
+	  --tag php-registration \
+	  .
 ``` 
 
-### Help on command
+### Run web server
 
-`$ make 00-basic-02-help-on-command`
+`$ make 00-build-02-run-web-server`
 
 ```
-docker ps --help
+docker kill php-registration
+docker rm php-registration
+docker run \
+	  --name php-registration \
+	  --rm \
+	  --detach \
+	  -v $PWD/db:/var/www/data \
+	  -p 13380:80 \
+	  php-registration
+docker exec php-registration bash -c "rm /var/www/data/database.db || true ;sqlite3 /var/www/data/database.db < /var/www/html/table.sql; chmod 777 /var/www/data/database.db"
 ``` 
 
-### Get docker version
+### Test http
 
-`$ make 01-basic-01-get-docker-version`
+`$ make 00-build-03-test-http`
 
 ```
-docker --version
+curl http://127.0.0.1:13380/styles.css
 ``` 
 
-### Get docker and subs versions
+### Cleanup
 
-`$ make 01-basic-02-get-docker-and-subs-versions`
-
-```
-docker version
-``` 
-
-### Get a detailed overview
-
-`$ make 01-basic-03-get-a-detailed-overview`
+`$ make 00-build-04-cleanup`
 
 ```
-docker info
-``` 
-
-## Docker
-
-### First launch
-
-`$ make 02-docker-01-first-launch`
-
-```
-docker run hello-world
-``` 
-
-## Image
-
-### List local image
-
-`$ make 03-image-01-list-local-image`
-
-```
-docker image ls
-``` 
-
-## Containers
-
-### List running
-
-`$ make 04-containers-01-list-running`
-
-```
-docker container ls
-``` 
-
-### List running all
-
-`$ make 04-containers-02-list-running-all`
-
-```
-docker container ls --all
-``` 
-
-### List running all quiet
-
-`$ make 04-containers-03-list-running-all-quiet`
-
-```
-docker container ls -aq
+#- docker kill php-registration
+#- docker rm $(docker ps -a --format="{{.Names}}")
 ``` 
 
