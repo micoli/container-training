@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1"
+	 id="svg8986" inkscape:version="0.92.2 2405546, 2018-03-11" sodipodi:docname="crb.svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 48.9 47.7"
+	 style="enable-background:new 0 0 48.9 47.7;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#326CE5;}
+	.st2{fill:#EEEEEE;}
+	.st3{font-family:'ArialMT';}
+	.st4{font-size:8px;}
+</style>
+<sodipodi:namedview  bordercolor="#666666" borderopacity="1.0" fit-margin-bottom="0" fit-margin-left="0" fit-margin-right="0" fit-margin-top="0" id="base" inkscape:current-layer="layer1" inkscape:cx="3.8247004" inkscape:cy="26.111909" inkscape:document-units="mm" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:window-height="1556" inkscape:window-maximized="1" inkscape:window-width="2560" inkscape:window-x="0" inkscape:window-y="0" inkscape:zoom="11.2" pagecolor="#ffffff" showgrid="false">
+	</sodipodi:namedview>
+<path id="path8716" pointer-events="none" inkscape:connector-curvature="0" class="st0" d="M23.8,12.8c-2.3,0-4.2,1.9-4.2,4.2v1.8
+	H28V17C28,14.7,26.1,12.8,23.8,12.8z"/>
+<ellipse id="ellipse8718" pointer-events="none" class="st0" cx="23.3" cy="26.5" rx="3" ry="3"/>
+<path id="path8720" pointer-events="none" inkscape:connector-curvature="0" class="st0" d="M23.7,2.4L5.3,10.6v12.1
+	C5.3,34,13.2,44.5,23.7,47C34.3,44.5,42.1,34,42.1,22.7V10.6L23.7,2.4z M33.5,35.1H14V18.7h2.8V17c0-3.9,3.2-7,7-7c3.9,0,7,3.1,7,7
+	v1.8h2.6V35.1z"/>
+<path id="path8722" inkscape:connector-curvature="0" class="st1" d="M0,30.7L4.8,9.5L24.5,0l19.6,9.5l4.8,21.2l-13.6,17H13.6
+	L0,30.7z"/>
+<text transform="matrix(1 0 0 1 18.8281 44.4453)" class="st2 st3 st4">crb</text>
+<path id="path8732" inkscape:connector-curvature="0" class="st2" d="M15.6,24c0-1.9,1.5-3.4,3.4-3.4h4.4v-2.1H19
+	c-3,0-5.5,2.5-5.5,5.5c0,3,2.5,5.5,5.5,5.5h4.4v-2.1H19C17.1,27.4,15.6,25.8,15.6,24z M20.1,25.1h8.8v-2.2h-8.8V25.1z M29.9,18.5
+	h-4.4v2.1h4.4c1.9,0,3.4,1.5,3.4,3.4c0,1.9-1.5,3.4-3.4,3.4h-4.4v2.1h4.4c3,0,5.5-2.5,5.5-5.5S33,18.5,29.9,18.5z"/>
+</svg>
