@@ -1,22 +1,42 @@
 FROM yarnpkg/node-yarn as yarn
 RUN npm install -g less
 
-COPY styles.less ./
+COPY styles/* ./
 
-RUN lessc styles.less styles.css
+RUN lessc main.less main.css
 
 FROM phpearth/php:7.3-nginx
 
-RUN apk add \
-        bash \
-        sqlite \
-        php7.3-sqlite3;
+RUN apk add composer;\
+    mkdir -p /var/log; \
+    mkdir /application; \
+    apk add make;\
+    mkdir var; \
+    chmod 777 var;
 
-WORKDIR /var/www/html/
+ARG APP_ENV
+ENV APP_ENV=$APP_ENV
 
-RUN mkdir /var/www/data/; \
-    chmod 777 /var/www/data/
+WORKDIR /application
 
-COPY src/* ./
-COPY --from=yarn styles.css styles.css
+COPY composer.* ./
+COPY symfony.lock ./
+RUN composer install --no-dev --no-scripts
 
+COPY .docker /
+
+COPY bin bin
+COPY config config
+COPY public public
+COPY src src
+COPY templates templates
+COPY tests tests
+
+COPY Makefile ./
+COPY phpunit.xml.dist ./
+COPY .php_cs.dist ./
+COPY .env.dist ./.env
+COPY --from=yarn main.css public/
+
+RUN composer dump-autoload; \
+    bin/console cache:warmup;

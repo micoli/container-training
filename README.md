@@ -1,4 +1,4 @@
-# 04-Multistage-build
+# 05-Build-and-Cache
 
 ## Build
 
@@ -8,7 +8,8 @@
 
 ```
 docker build \
-	  --tag php-registration \
+	  --build-arg APP_ENV=dev \
+	  --tag php-symfony \
 	  .
 ``` 
 
@@ -17,16 +18,14 @@ docker build \
 `$ make 00-build-02-run-web-server`
 
 ```
-docker kill php-registration
-docker rm php-registration
+docker kill php-symfony
+docker rm php-symfony
 docker run \
-	  --name php-registration \
+	  --name php-symfony \
 	  --rm \
 	  --detach \
-	  -v $PWD/db:/var/www/data \
 	  -p 13380:80 \
-	  php-registration
-docker exec php-registration bash -c "rm /var/www/data/database.db || true ;sqlite3 /var/www/data/database.db < /var/www/html/table.sql; chmod 777 /var/www/data/database.db"
+	  php-symfony
 ``` 
 
 ### Test http
@@ -34,7 +33,8 @@ docker exec php-registration bash -c "rm /var/www/data/database.db || true ;sqli
 `$ make 00-build-03-test-http`
 
 ```
-curl http://127.0.0.1:13380/styles.css
+curl http://127.0.0.1:13380/status
+curl http://127.0.0.1:13380/main.css
 ``` 
 
 ### Cleanup
@@ -42,7 +42,7 @@ curl http://127.0.0.1:13380/styles.css
 `$ make 00-build-04-cleanup`
 
 ```
-#- docker kill php-registration
-#- docker rm $(docker ps -a --format="{{.Names}}")
+docker kill php-symfony
+docker rm $(docker ps -a --format="{{.Names}}")
 ``` 
 

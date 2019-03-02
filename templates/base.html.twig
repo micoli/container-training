@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel='stylesheet' href='main.css' type='text/css' media='all' />
+
+    </head>
+    <body>
+    {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

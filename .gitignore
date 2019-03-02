@@ -6,7 +6,6 @@
 /var/
 /vendor/
 /builds
-/db/database.db
 ###< symfony/framework-bundle ###
 .idea
 ###> friendsofphp/php-cs-fixer ###
