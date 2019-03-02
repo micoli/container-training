@@ -1,90 +1,90 @@
-# 01-Basic
+# 03-Building-image
 
-## Basic
+## Build
 
-### Usage
+### Build image
 
-`$ make 00-basic-01-usage`
+`$ make 00-build-01-build-image`
 
 ```
-docker
+docker build \
+	  --tag php-registration \
+	  .
 ``` 
 
-### Help on command
+### Push
 
-`$ make 00-basic-02-help-on-command`
+`$ make 00-build-02-push`
 
 ```
-docker ps --help
+echo "docker login"
+echo "docker tag php-registration micoli/php-registration"
 ``` 
 
-### Get docker version
+### Run web server
 
-`$ make 01-basic-01-get-docker-version`
+`$ make 00-build-03-run-web-server`
 
 ```
-docker --version
+docker kill php-registration
+docker rm php-registration
+docker run \
+	  --name php-registration \
+	  --rm \
+	  --detach \
+	  -v $PWD/db:/var/www/data \
+	  -p 13380:80 \
+	  php-registration
 ``` 
 
-### Get docker and subs versions
+### Init database
 
-`$ make 01-basic-02-get-docker-and-subs-versions`
+`$ make 00-build-04-init-database`
 
 ```
-docker version
+docker exec php-registration bash -c "rm /var/www/data/database.db || true ;sqlite3 /var/www/data/database.db < /var/www/html/table.sql; chmod 777 /var/www/data/database.db"
 ``` 
 
-### Get a detailed overview
+### Test http
 
-`$ make 01-basic-03-get-a-detailed-overview`
+`$ make 00-build-05-test-http`
 
 ```
-docker info
+curl http://127.0.0.1:13380
+curl -X POST -d "name=toto&email=toto@titi.com&username=user01&pwd=p4ssw0rd" http://127.0.0.1:13380/registration.php
 ``` 
 
-## Docker
+### Stop webserver
 
-### First launch
-
-`$ make 02-docker-01-first-launch`
+`$ make 00-build-06-stop-webserver`
 
 ```
-docker run hello-world
+docker stop php-registration
+docker ps
 ``` 
 
-## Image
+### Restart webserver
 
-### List local image
-
-`$ make 03-image-01-list-local-image`
+`$ make 00-build-07-restart-webserver`
 
 ```
-docker image ls
+docker run \
+	  --name php-registration \
+	  --rm \
+	  --detach \
+	  -v $PWD/db:/var/www/data \
+	  -v $PWD/src:/var/www/html \
+	  -p 13380:80 \
+	  php-registration
+docker exec php-registration bash -c "sqlite3 /var/www/data/database.db 'select * from USERS;'"
 ``` 
 
-## Containers
+### Kill server
 
-### List running
-
-`$ make 04-containers-01-list-running`
+`$ make 00-build-08-kill-server`
 
 ```
-docker container ls
-``` 
-
-### List running all
-
-`$ make 04-containers-02-list-running-all`
-
-```
-docker container ls --all
-``` 
-
-### List running all quiet
-
-`$ make 04-containers-03-list-running-all-quiet`
-
-```
-docker container ls -aq
+docker kill php-registration
+docker rm $(docker ps -a --format="{{.Names}}")
 ``` 
 
