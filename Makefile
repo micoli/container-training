@@ -32,60 +32,48 @@ doc:
 		echo -e "\n\`\`\`\n$$code\n\`\`\` \n" ; \
 	done
 
-00-status-01-view-running-containers:
-	docker ps --format "{{.Names}}"
-	docker ps --format "{{json .}}"
-	docker ps --format "{{.ID}};{{.Image}};{{.Names}}"
-	#https://docs.docker.com/config/formatting/
+00-build-01-build-image:
+	docker build \
+	  --tag php-registration \
+	  .
 
-01-basic-php-01-run-image-and-exec:
-	docker run php:7.3.2-cli-stretch php -r "print 12*12;"
-	#docker run -it php:7.3.2-cli-stretch bash
+00-build-02-push:
+	echo "docker login"
+	echo "docker tag php-registration micoli/php-registration"
 
-02-mysql-01-cleanup:
-	-docker stop mysql8
-	-docker rm mysql8
-
-02-mysql-02-run-mysql-server:
+00-build-03-run-web-server:
+	- docker kill php-registration
+	- docker rm php-registration
 	docker run \
-		--name mysql8 \
-		--detach \
-		-p 13306:3306 \
-		--env MYSQL_ROOT_PASSWORD=azerty \
-		mysql:8.0.15
-	sleep 20
+	  --name php-registration \
+	  --rm \
+	  --detach \
+	  -v $$PWD/db:/var/www/data \
+	  -p 13380:80 \
+	  php-registration
 
-02-mysql-03-execute-a-basic-query:
-	docker exec  mysql8 mysql -u root --password=azerty -e 'select Host,User from mysql.user;'
+00-build-04-init-database:
+	docker exec php-registration bash -c "rm /var/www/data/database.db || true ;sqlite3 /var/www/data/database.db < /var/www/html/table.sql; chmod 777 /var/www/data/database.db"
 
-02-mysql-04-create-table-and-insert-datas:
-	docker exec mysql8 mysql -u root --password=azerty -e 'drop database if exists foo;\
-	create database foo;\
-	use foo;\
-	drop table if exists bar;\
-	create table bar (\
-	   col01 varchar(20)\
-	);\
-	insert into foo.bar values ("azerty");'
+00-build-05-test-http:
+	curl http://127.0.0.1:13380
+	curl -X POST -d "name=toto&email=toto@titi.com&username=user01&pwd=p4ssw0rd" http://127.0.0.1:13380/registration.php
 
-02-mysql-05-stop-mysql-container:
-	docker stop mysql8
-
-02-mysql-06-view-running-containers:
+00-build-06-stop-webserver:
+	docker stop php-registration
 	docker ps
 
-02-mysql-07-view-all-containers:
-	docker ps -a
+00-build-07-restart-webserver:
+	docker run \
+	  --name php-registration \
+	  --rm \
+	  --detach \
+	  -v $$PWD/db:/var/www/data \
+	  -v $$PWD/src:/var/www/html \
+	  -p 13380:80 \
+	  php-registration
+	docker exec php-registration bash -c "sqlite3 /var/www/data/database.db 'select * from USERS;'"
 
-02-mysql-08-restart-container-and-check:
-	docker restart mysql8
-	sleep 5
-	docker exec mysql8 mysql -u root --password=azerty -e 'select * from foo.bar;'
-
-02-mysql-09-cleanup:
-	docker kill mysql8
-	docker rm mysql8
-
-
-
-
+00-build-08-kill-server:
+	- docker kill php-registration
+	- docker rm $$(docker ps -a --format="{{.Names}}")

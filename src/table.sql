@@ -1,0 +1,7 @@
+CREATE TABLE USERS(
+   ID INT PRIMARY KEY     NOT NULL,
+   NAME           TEXT    NOT NULL,
+   USERNAME       TEXT     NOT NULL,
+   MAIL           TEXT,
+   PASSWORD       TEXT
+);

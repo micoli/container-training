@@ -2,4 +2,5 @@ vendor
 var
 .helm
 .gitlabci
+.git
 builds
