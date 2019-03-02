@@ -61,3 +61,6 @@ doc:
 
 04-containers-03-list-running-all-quiet:
 	docker container ls -aq
+
+05-images-01-remove-all-unsed-images:
+	docker system prune -f

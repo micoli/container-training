@@ -88,3 +88,13 @@ docker container ls --all
 docker container ls -aq
 ``` 
 
+## Images
+
+### Remove all unsed images
+
+`$ make 05-images-01-remove-all-unsed-images`
+
+```
+docker system prune -f
+``` 
+
