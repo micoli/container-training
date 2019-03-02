@@ -32,32 +32,60 @@ doc:
 		echo -e "\n\`\`\`\n$$code\n\`\`\` \n" ; \
 	done
 
-00-basic-01-usage:
-	docker
+00-status-01-view-running-containers:
+	docker ps --format "{{.Names}}"
+	docker ps --format "{{json .}}"
+	docker ps --format "{{.ID}};{{.Image}};{{.Names}}"
+	#https://docs.docker.com/config/formatting/
 
-00-basic-02-help-on-command:
-	docker ps --help
+01-basic-php-01-run-image-and-exec:
+	docker run php:7.3.2-cli-stretch php -r "print 12*12;"
+	#docker run -it php:7.3.2-cli-stretch bash
 
-01-basic-01-get-docker-version:
-	docker --version
+02-mysql-01-cleanup:
+	-docker stop mysql8
+	-docker rm mysql8
 
-01-basic-02-get-docker-and-subs-versions:
-	docker version
+02-mysql-02-run-mysql-server:
+	docker run \
+		--name mysql8 \
+		--detach \
+		-p 13306:3306 \
+		--env MYSQL_ROOT_PASSWORD=azerty \
+		mysql:8.0.15
+	sleep 20
 
-01-basic-03-get-a-detailed-overview:
-	docker info
+02-mysql-03-execute-a-basic-query:
+	docker exec  mysql8 mysql -u root --password=azerty -e 'select Host,User from mysql.user;'
 
-02-docker-01-first-launch:
-	docker run hello-world
+02-mysql-04-create-table-and-insert-datas:
+	docker exec mysql8 mysql -u root --password=azerty -e 'drop database if exists foo;\
+	create database foo;\
+	use foo;\
+	drop table if exists bar;\
+	create table bar (\
+	   col01 varchar(20)\
+	);\
+	insert into foo.bar values ("azerty");'
 
-03-image-01-list-local-image:
-	docker image ls
+02-mysql-05-stop-mysql-container:
+	docker stop mysql8
 
-04-containers-01-list-running:
-	docker container ls
+02-mysql-06-view-running-containers:
+	docker ps
 
-04-containers-02-list-running-all:
-	docker container ls --all
+02-mysql-07-view-all-containers:
+	docker ps -a
 
-04-containers-03-list-running-all-quiet:
-	docker container ls -aq
+02-mysql-08-restart-container-and-check:
+	docker restart mysql8
+	sleep 5
+	docker exec mysql8 mysql -u root --password=azerty -e 'select * from foo.bar;'
+
+02-mysql-09-cleanup:
+	docker kill mysql8
+	docker rm mysql8
+
+
+
+
