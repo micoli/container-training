@@ -32,32 +32,5 @@ doc:
 		echo -e "\n\`\`\`\n$$code\n\`\`\` \n" ; \
 	done
 
-00-basic-01-usage:
-	docker
-
-00-basic-02-help-on-command:
-	docker ps --help
-
-01-basic-01-get-docker-version:
-	docker --version
-
-01-basic-02-get-docker-and-subs-versions:
-	docker version
-
-01-basic-03-get-a-detailed-overview:
-	docker info
-
-02-docker-01-first-launch:
-	docker run hello-world
-
-03-image-01-list-local-image:
-	docker image ls
-
-04-containers-01-list-running:
-	docker container ls
-
-04-containers-02-list-running-all:
-	docker container ls --all
-
-04-containers-03-list-running-all-quiet:
-	docker container ls -aq
+00-api-01-access-through-socket:
+	curl --unix-socket /var/run/docker.sock http://docker/containers/json
