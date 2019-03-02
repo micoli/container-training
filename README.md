@@ -1,90 +1,117 @@
-# 01-Basic
+# 02-Containers
 
-## Basic
+## Status
 
-### Usage
+### View running containers
 
-`$ make 00-basic-01-usage`
+`$ make 00-status-01-view-running-containers`
 
 ```
-docker
+docker ps --format "{{.Names}}"
+docker ps --format "{{json .}}"
+docker ps --format "{{.ID}};{{.Image}};{{.Names}}"
+#https://docs.docker.com/config/formatting/
 ``` 
 
-### Help on command
+## Basic php
 
-`$ make 00-basic-02-help-on-command`
+### Run image and exec
+
+`$ make 01-basic-php-01-run-image-and-exec`
 
 ```
-docker ps --help
+docker run php:7.3.2-cli-stretch php -r "print 12*12;"
+#docker run -it php:7.3.2-cli-stretch bash
 ``` 
 
-### Get docker version
+## Mysql
 
-`$ make 01-basic-01-get-docker-version`
+### Cleanup
+
+`$ make 02-mysql-01-cleanup`
 
 ```
-docker --version
+docker stop mysql8
+docker rm mysql8
 ``` 
 
-### Get docker and subs versions
+### Run mysql server
 
-`$ make 01-basic-02-get-docker-and-subs-versions`
+`$ make 02-mysql-02-run-mysql-server`
 
 ```
-docker version
+docker run \
+	  --name mysql8 \
+	  --detach \
+	  -p 13306:3306 \
+	  --env MYSQL_ROOT_PASSWORD=azerty \
+	  mysql:8.0.15
+sleep 20
 ``` 
 
-### Get a detailed overview
+### Execute a basic query
 
-`$ make 01-basic-03-get-a-detailed-overview`
+`$ make 02-mysql-03-execute-a-basic-query`
 
 ```
-docker info
+docker exec  mysql8 mysql -u root --password=azerty -e 'SELECT Host,User FROM mysql.user;'
 ``` 
 
-## Docker
+### Create table and insert datas
 
-### First launch
-
-`$ make 02-docker-01-first-launch`
+`$ make 02-mysql-04-create-table-and-insert-datas`
 
 ```
-docker run hello-world
+docker exec mysql8 mysql -u root --password=azerty -e 'DROP DATABASE IF EXISTS foo;\
+	CREATE DATABASE foo;\
+	USE foo;\
+	DROP TABLE IF EXISTS bar;\
+	CREATE TABLE bar (\
+	   col01 VARCHAR(20)\
+	);\
+	INSERT INTO foo.bar VALUES ("azerty");'
 ``` 
 
-## Image
+### Stop mysql container
 
-### List local image
-
-`$ make 03-image-01-list-local-image`
+`$ make 02-mysql-05-stop-mysql-container`
 
 ```
-docker image ls
+docker stop mysql8
 ``` 
 
-## Containers
+### View running containers
 
-### List running
-
-`$ make 04-containers-01-list-running`
+`$ make 02-mysql-06-view-running-containers`
 
 ```
-docker container ls
+docker ps
 ``` 
 
-### List running all
+### View all containers
 
-`$ make 04-containers-02-list-running-all`
+`$ make 02-mysql-07-view-all-containers`
 
 ```
-docker container ls --all
+docker ps -a
 ``` 
 
-### List running all quiet
+### Restart container and check
 
-`$ make 04-containers-03-list-running-all-quiet`
+`$ make 02-mysql-08-restart-container-and-check`
 
 ```
-docker container ls -aq
+docker restart mysql8
+sleep 5
+docker exec mysql8 mysql -u root --password=azerty -e 'select * from foo.bar;'
+``` 
+
+### Cleanup
+
+`$ make 02-mysql-09-cleanup`
+
+```
+docker kill mysql8
+docker rm mysql8
 ``` 
 
