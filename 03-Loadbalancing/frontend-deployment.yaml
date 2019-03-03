@@ -30,5 +30,7 @@ spec:
         env:
         - name: APP_TYPE
           value: frontend
+        - name: APP_ENV
+          value: dev
         - name: DEPLOY_TAG
           value: _ghjdsqgjhg2
