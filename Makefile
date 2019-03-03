@@ -33,19 +33,51 @@ doc:
 	done
 
 00-docker-compose-01-up:
-	- docker-compose down
-	docker-compose up -d
+kubectl config use-context minikube
+kubectl cluster-info
+cat ~/.kube/config
+kubectl proxy &
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
 
-00-docker-compose-02-monitoring:
-	docker-compose ps
-	docker-compose logs
-	docker-compose logs redis-cache
 
-00-docker-compose-03-check-results:
-	curl http://127.0.0.1:4000/status
 
-00-docker-compose-04-launch-command:
-	docker-compose exec application bin/console
+00-docker-compose-01-up:
+kubectl delete -f 01-Simple/
+kubectl apply -f 01-Simple/
+kubectl get pods
+kubectl get all
+kubectl get pods -o name
+kubectl get pods -o wide
+kubectl exec nginx cat /etc/nginx/conf.d/default.conf
+kubectl describe pod nginx
+kubectl get pods -o --field-selector=status.phase=Running -o=jsonpath='{.items[*].metadata.name}'
+kubectl get pods -o --field-selector=status.phase=Running -o=json
+kubectl logs nginx -c nginx
+kubectl port-forward pod/nginx 8080:80 &;kubectlPid=$!
+curl http://127.0.0.1:8080
+kill $kubectlPid
+kubectl delete -f 01-Simple/
+kubectl get all
 
-00-docker-compose-05-cleanup:
-	#- docker-compose down
+
+kubectl delete -f 02-Selector/
+kubectl apply -f 02-Selector/
+kubectl get all -l app=frontend
+kubectl get all -l app=backend
+kubectl get all -l service=cdn
+kubectl get all -l type=application
+kubectl get all -l type=application,environment=dev
+kubectl get all -l 'type notin (application)'
+kubectl get all -l 'type in (application)'
+kubectl get all -l 'type in (application),app=frontend'
+kubectl delete pods -l service=cdn\n
+kubectl get pods
+kubectl delete -f 02-Selector/
+kubectl get all
+
+
+03-Loadbalancing/container/build.sh
+kubectl delete -f 03-Loadbalancing/
+kubectl apply -f 03-Loadbalancing/
+curl http://localhost:8001/api/v1/namespaces/default/services/http:frontend-service:web/proxy/

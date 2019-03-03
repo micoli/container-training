@@ -1,0 +1,16 @@
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-external
+  labels:
+    environment : dev
+    service: cdn
+    app: external
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80

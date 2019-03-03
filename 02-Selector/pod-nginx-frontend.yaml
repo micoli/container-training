@@ -1,0 +1,16 @@
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-frontend
+  labels:
+    environment : dev
+    type: application
+    app: frontend
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
