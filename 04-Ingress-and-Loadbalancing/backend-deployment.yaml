@@ -1,0 +1,35 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    environment : dev
+    type: application
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+
+  template:
+    metadata:
+      labels:
+        environment : dev
+        type: application
+        app: backend
+    spec:
+      containers:
+      - name: php-app
+        image: localhost:5000/simple-php-application:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: APP_TYPE
+          value: backend
+        - name: APP_ENV
+          value: dev
+        - name: DEPLOY_TAG
+          value: _ghjdsqgjhg2
